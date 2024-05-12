@@ -20,11 +20,9 @@ puede integrar con javascript. Además debe contener una plantilla adaptativa
 (Header,Menu, Container, Footer).
 
 
-El sistema que se elaborara es el siguiente, basado en el API
+El sistema que se elaborara es el siguiente, basado en el API https://paginas-web-cr.com/Api/, y utilizando javascript sin framework, se requiere crear
 
-https://paginas-web-cr.com/Api/, y utilizando javascript sin framework, se requiere crear
-
-los siguientes módulos.
+los siguientes módulos:
 
 Estudiante, con base a los atributos que tiene el api se debe crear la interfaz que permita,
 

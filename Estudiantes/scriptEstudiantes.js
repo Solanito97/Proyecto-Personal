@@ -4,11 +4,13 @@ let formulario = document.getElementById('formulario');
 let nombrePagina = document.title;
 let nombreModuloListar = 'Estudiantes';
 let nombreModuloCrear = 'Crear Estudiante';
+let formularioEditar = document.getElementById('formularioEditar');
 
 
 let url= "https://paginas-web-cr.com/Api/apis/";
 let listar = "ListaEstudiantes.php";
 let insertar = "InsertarEstudiantes.php";
+let actualizar = "ActualizarEstudiantes.php";
 
 
 
@@ -66,21 +68,111 @@ if (nombrePagina == nombreModuloCrear) {
     })
 }
 
+formularioEditar.addEventListener('submit', 
+    function(e) {
+    e.preventDefault();//evita que la pagina se recargue
+    
+    let datos = new FormData(formularioEditar);
 
+    let datosEnviar = {
+        cedula: datos.get('cedula'),
+            correoelectronico: datos.get('correoelectronico'),
+            telefono: datos.get('telefono'),
+            telefonocelular: datos.get('telefonocelular'),
+            fechanacimiento: datos.get('fechanacimiento'),
+            sexo: datos.get('sexo'),
+            direccion: datos.get('direccion'),
+            nombre: datos.get('nombre'),
+            apellidopaterno: datos.get('apellidopaterno'),
+            apellidomaterno: datos.get('apellidomaterno'),
+            nacionalidad: datos.get('nacionalidad'),
+            idCarreras: datos.get('idCarreras'),
+            usuario: datos.get('usuario'),
+    }
+    console.log(datosEnviar);
+
+        //url + insertar esto es la url del servicio concatenada
+        fetch( url + actualizar,
+            {
+                method: 'POST',
+                body: JSON.stringify(datosEnviar)
+            } 
+        )
+        .then(respuesta=>respuesta.json())
+        .then( (datosrepuesta) => {
+            mensajeActualizar(datosrepuesta)
+        })
+        .catch(console.log)
+
+ 
+})
 
 
 
 ///  FUNCIONES Y METODOS ////
 function mensajeInsertar(datos){
-    if (datos.code == 200) {
-        alert("Ingreso exitoso");
-    } 
-    else 
-    {
-        alert("El correo ya fue utilizado");
+    if(datos.code == 200){        
+        mensajesSistema.innerHTML = `<div
+                class="alert alert-success alert-dismissible fade show"
+                role="alert"
+            >
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+                <strong>Ingreso exitoso</strong>
+            </div>`;
+    }
+    else{
+        mensajesSistema.innerHTML = `<div
+                class="alert alert-warning alert-dismissible fade show"
+                role="alert"
+            >
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+                <strong>Correo duplicado</strong>
+            </div>`;
     }
 }
 
+function mensajeActualizar(datos){
+    if(datos.code == 200){        
+        mensajesSistema.innerHTML = `<div
+                class="alert alert-success alert-dismissible fade show"
+                role="alert"
+            >
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+                <strong>Actualizacion exitosa</strong>
+            </div>`;
+
+        setTimeout(cargarDatos, 3000);    
+    }
+    else{
+        mensajesSistema.innerHTML = `<div
+                class="alert alert-danger alert-dismissible fade show"
+                role="alert"
+            >
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+                <strong>Error al actualizar</strong>
+            </div>`;
+    }
+}
 
 function cargarDatos(){
     loadspinner();
@@ -149,12 +241,48 @@ function mostrarDatos(datos){
 
 }
 
+
+
 function loadspinner(){
 
     document.getElementById("spinnerload").innerHTML = spinner;
 
 }
 
+function editar(datos) {
+    let objeto = JSON.parse(decodeURIComponent(datos));
+    //console.log(objeto);
+    const modalEdicion = new bootstrap.Modal(
+        document.getElementById("modalEditar"));
+        modalEdicion.show();
+    document.getElementById("idEditar").value = objeto.id;
+    document.getElementById("cedula").value = objeto.cedula;
+    document.getElementById("correoelectronico").value = objeto.correoelectronico;
+    document.getElementById("telefono").value = objeto.telefono;
+    document.getElementById("telefonocelular").value = objeto.telefonocelular;
+    document.getElementById("fechanacimiento").value = objeto.fechanacimiento;
+    document.getElementById("sexo").value = objeto.sexo;
+    document.getElementById("direccion").value = objeto.direccion;
+    document.getElementById("nombre").value = objeto.nombre;
+    document.getElementById("apellidopaterno").value = objeto.apellidopaterno;
+    document.getElementById("apellidomaterno").value = objeto.apellidomaterno;
+    document.getElementById("nacionalidad").value = objeto.nacionalidad;
+    document.getElementById("idCarreras").value = objeto.idCarreras;
+    document.getElementById("usuario").value = objeto.usuario;
+
+}
+
+function eliminar(id){
+    document.getElementById("idEliminar").innerHTML = id;
+    document.getElementById("idEliminarModal").value = id;
+    
+    let modalEliminar = new bootstrap.Modal(document.getElementById("modalEliminar"));
+    modalEliminar.show();
+}
+
+function modalEliminarConfirmacion(){
+    //document.getElementById("idEliminarModal").value
+}
 
 
 

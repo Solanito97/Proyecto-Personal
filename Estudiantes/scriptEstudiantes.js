@@ -68,6 +68,7 @@ if (nombrePagina == nombreModuloCrear) {
     })
 }
 
+if(nombrePagina == nombreModuloListar){
 formularioEditar.addEventListener('submit', 
     function(e) {
     e.preventDefault();//evita que la pagina se recargue
@@ -75,7 +76,8 @@ formularioEditar.addEventListener('submit',
     let datos = new FormData(formularioEditar);
 
     let datosEnviar = {
-        cedula: datos.get('cedula'),
+            id: datos.get('id'),
+            cedula: datos.get('cedula'),
             correoelectronico: datos.get('correoelectronico'),
             telefono: datos.get('telefono'),
             telefonocelular: datos.get('telefonocelular'),
@@ -101,12 +103,14 @@ formularioEditar.addEventListener('submit',
         .then(respuesta=>respuesta.json())
         .then( (datosrepuesta) => {
             mensajeActualizar(datosrepuesta)
+            console.log(datosrepuesta);
+            console.log(datosEnviar);
         })
         .catch(console.log)
 
- 
+        
 })
-
+}
 
 
 ///  FUNCIONES Y METODOS ////
@@ -255,7 +259,6 @@ function editar(datos) {
     const modalEdicion = new bootstrap.Modal(
         document.getElementById("modalEditar"));
         modalEdicion.show();
-    document.getElementById("idEditar").value = objeto.id;
     document.getElementById("cedula").value = objeto.cedula;
     document.getElementById("correoelectronico").value = objeto.correoelectronico;
     document.getElementById("telefono").value = objeto.telefono;
@@ -269,6 +272,9 @@ function editar(datos) {
     document.getElementById("nacionalidad").value = objeto.nacionalidad;
     document.getElementById("idCarreras").value = objeto.idCarreras;
     document.getElementById("usuario").value = objeto.usuario;
+    document.getElementById("id").value = objeto.id;
+    document.getElementById("idEditar").innerHTML = objeto.id;
+
 
 }
 
@@ -281,7 +287,7 @@ function eliminar(id){
 }
 
 function modalEliminarConfirmacion(){
-    //document.getElementById("idEliminarModal").value
+    document.getElementById("idEliminarModal").value
 }
 
 

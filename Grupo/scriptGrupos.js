@@ -3,12 +3,13 @@ let formulario = document.getElementById('formulario');
 let nombrePagina = document.title;
 let nombreModuloListar = 'Lista Grupos';
 let nombreModuloCrear = 'Crear Grupo';
+let formularioEditar = document.getElementById('formularioEditar');
 
 
 let url= "https://paginas-web-cr.com/Api/apis/";
 let listar = "ListaGrupo.php";
 let insertar = "InsertarGrupo.php";
-
+let actualizar = "ActualizarGrupo.php";
 
 
 //spinner de carga de los datos//
@@ -29,6 +30,7 @@ if (nombrePagina == nombreModuloCrear) {
         let datos = new FormData(formulario);
 
         let datosEnviar = {
+            id: datos.get('id'),
             nombre: datos.get('nombre'),
             
         }
@@ -55,6 +57,35 @@ if (nombrePagina == nombreModuloCrear) {
 }
 
 
+if(nombrePagina == nombreModuloListar){
+    formularioEditar.addEventListener('submit', 
+        function(e) {
+        e.preventDefault();//evita que la pagina se recargue
+        
+        let datos = new FormData(formularioEditar);
+    
+        let datosEnviar = {
+                id: datos.get('id'),
+                nombre: datos.get('nombre'),
+        }
+        console.log(datosEnviar);
+    
+            //url + insertar esto es la url del servicio concatenada
+            fetch( url + actualizar,
+                {
+                    method: 'POST',
+                    body: JSON.stringify(datosEnviar)
+                } 
+            )
+            .then(respuesta=>respuesta.json())
+            .then( (datosrepuesta) => {
+                mensajeActualizar(datosrepuesta)
+                console.log(datosrepuesta);
+                console.log(datosEnviar);
+            })
+            .catch(console.log)
+    })
+}
 
 
 
@@ -77,6 +108,7 @@ function cargarDatos(){
     .then ( (datosrespuesta) =>{
         //console.log(datosrespuesta)
         mostrarDatos(datosrespuesta)
+        //console.log(datosrespuesta);
     })
     .catch(console.log)
 }
@@ -112,6 +144,7 @@ function mostrarDatos(datos){
             
             
             </td>
+            <td>${iterator.id}</td>
             <td>${iterator.nombre}</td> `
        }
        
@@ -131,7 +164,48 @@ function loadspinner(){
 
 }
 
+function mensajeActualizar(datos){
+    if(datos.code == 200){        
+        mensajesSistema.innerHTML = `<div
+                class="alert alert-success alert-dismissible fade show"
+                role="alert"
+            >
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+                <strong>Actualizacion exitosa</strong>
+            </div>`;
 
+        setTimeout(cargarDatos, 3000);    
+    }
+    else{
+        mensajesSistema.innerHTML = `<div
+                class="alert alert-danger alert-dismissible fade show"
+                role="alert"
+            >
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+                <strong>Error al actualizar</strong>
+            </div>`;
+    }
+}
+
+function editar(datos) {
+    let objeto = JSON.parse(decodeURIComponent(datos));
+    //console.log(objeto);
+    const modalEdicion = new bootstrap.Modal(
+        document.getElementById("modalEditar"));
+        modalEdicion.show();
+        document.getElementById("id").value = objeto.id;
+    document.getElementById("nombre").value = objeto.nombre;
+}
 
 
 ///SECCION DE EJECUCIOND DE LOS DATOS/////

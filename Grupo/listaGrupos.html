@@ -32,7 +32,7 @@
             <div
                 class="row"
             >
-            <h2>Cursos</h2>        
+            <h2>Grupos</h2>        
             <div id="spinnerload"></div>
         
             <div id="mensajesSistema">
@@ -48,6 +48,7 @@
                         <thead>
                             <tr>
                                 <th scope="col">Acciones</th>
+                                <th scope="col">ID</th>
                                 <th scope>Nombre</th>
                             </tr>
                         </thead>
@@ -67,6 +68,40 @@
             <!-- place footer here -->
             <div id="contenedorpie"></div>
         </footer>
+
+        <!-- Modal Body -->
+                    <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+                    <!-- Modal Body -->
+                    <div class="modal fade" id="modalEditar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalTitleId">Modal Editar</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="formularioEditar">
+                                        <div class="mb-3">
+                                          <label for="id" class="form-label">ID</label>
+                                          <input type="hidden" id="id" name="id">
+                                        <span id="idEditar"></span>
+                                        <div class="mb-3">
+                                            <label for="nombre" class="form-label">Nombre</label>
+                                            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
+                                        </div>
+                                        <div class="mb-3">
+                                            <button type="submit" class="btn btn-primary">Guardar</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <!-- Footer content here if needed -->
+                                </div>
+                            </div>
+                        </div>
+                      </div
+
         <!-- Bootstrap JavaScript Libraries -->
         <script src="/menu.js"></script>
         <script src="scriptGrupos.js"></script>

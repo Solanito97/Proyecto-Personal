@@ -5,12 +5,14 @@ let nombrePagina = document.title;
 let nombreModuloListar = 'Lista Curso';
 let nombreModuloCrear = 'Crear Curso';
 let formularioEditar = document.getElementById('formularioEditar');
+let formularioEliminar = document.getElementById('formularioEliminar');
 
 
 let url= "https://paginas-web-cr.com/Api/apis/";
 let listar = "ListaCurso.php";
 let insertar = "InsertarCursos.php";
 let actualizar = "ActualizarCursos.php";
+let borrar = "BorrarCursos.php";
 
 
 
@@ -222,7 +224,41 @@ function loadspinner(){
 
 }
 
+function eliminar(id){
+    document.getElementById("idEliminar").innerHTML = id;
+    document.getElementById("idEliminarModal").value = id;
+    
+    let modalEliminar = new bootstrap.Modal(document.getElementById("modalEliminar"));
+    modalEliminar.show();
+}
 
+function modalConfirmacionEliminar() {
+    let idEliminar = document.getElementById('idEliminarModal').value;
+    let datosEnviar = {
+        id: idEliminar
+    };
+
+    fetch(url + borrar, {
+        method: 'POST',
+        body: JSON.stringify(datosEnviar)
+    })
+        .then(respuesta => respuesta.json())
+        .then((datosrespuesta) => {
+            if (datosrespuesta.code == 200) {
+                document.getElementById('mensajesSistema').innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <strong>Eliminación exitosa</strong>
+                </div>`;
+                setTimeout(cargarDatos, 3000); 
+            } else {
+                document.getElementById('mensajesSistema').innerHTML = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <strong>Error al eliminar</strong>
+                </div>`;
+            }
+        })
+        .catch(console.log);
+}
 
 
 ///SECCION DE EJECUCIOND DE LOS DATOS/////
